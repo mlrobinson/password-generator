@@ -27,7 +27,7 @@ module PasswordGenerator
         @full_set += set
       end
 
-      raise 'You must enter at least one character set!' if @sets.empty?
+      raise ArgumentError, 'No Character Sets defined.' if @sets.empty?
     end
 
     def random_pos(str)

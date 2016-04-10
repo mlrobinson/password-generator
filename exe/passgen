@@ -48,9 +48,15 @@ if ARGV.empty?
 else
   length = ARGV.pop.to_i
   if length > 0
-    passwords = PasswordGenerator::PassGen.new(set)
-    print passwords.generate(length)
+    begin
+      passwords = PasswordGenerator::PassGen.new(set)
+      print passwords.generate(length)
+    rescue ArgumentError => e
+      puts "Error: #{e.message}"
+      puts option_parser.help
+    end
   else
-    puts 'You did not enter a valid length'
+    puts 'Error: You did not enter a valid length'
+    puts option_parser.help
   end
 end
