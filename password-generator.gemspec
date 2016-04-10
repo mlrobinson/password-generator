@@ -5,7 +5,7 @@ require 'password_generator/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'password-generator'
-  spec.version       = Password_Generator::VERSION
+  spec.version       = PasswordGenerator::VERSION
   spec.authors       = ['Matthew Robinson']
   spec.email         = ['matthew.robinson@ensighten.com']
 
