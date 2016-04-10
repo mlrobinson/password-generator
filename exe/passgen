@@ -12,7 +12,7 @@ option_parser = OptionParser.new do |opts|
   opts.banner = "Usage: #{executable_name} [options] length"
 
   options[:file] = '.passgen'
-  opts.on('-f', '--file', 'Character set file') do |file|
+  opts.on('-f', '--file', 'Character set file, default: .passgen') do |file|
     options[:file] = file
   end
 end
