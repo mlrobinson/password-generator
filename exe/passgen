@@ -1,0 +1,53 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+
+require 'password_generator'
+require 'optparse'
+
+options = {}
+
+option_parser = OptionParser.new do |opts|
+  executable_name = File.basename($PROGRAM_NAME)
+  opts.banner = "Usage: #{executable_name} [options] length"
+
+  options[:file] = ''
+  opts.on('-f', '--file', 'Character set file') do |_file|
+    options[:file] = true
+  end
+end
+
+# Read config file in home dir
+set = [
+  'abcdefghijklmnopqrstuvwxyz',
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+  '0123456789',
+  '!"#$%&\'()*+,-./:;<=>?@[]^_`{}~|'
+]
+
+# Read config in local dir
+
+# Read config from command line
+
+begin
+  option_parser.parse!
+rescue OptionParser::InvalidOption => error
+  puts "Passgen doesn't recognize that #{error}"
+  exit
+rescue OptionParser::AmbiguousOption => error
+  puts "That's an #{error}"
+  exit
+end
+
+if ARGV.empty?
+  puts 'Error: you must specify a password length'
+  puts option_parser.help
+else
+  length = ARGV[0].to_i
+  if length > 0
+    passwords = PasswordGenerator::PassGen.new(set)
+    print passwords.generate(length)
+  else
+    puts 'You did not enter a valid length'
+  end
+end

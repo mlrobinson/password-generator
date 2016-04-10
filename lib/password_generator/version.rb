@@ -1,3 +1,3 @@
-module Password_Generator
-  VERSION = "0.1.0"
+module PasswordGenerator
+  VERSION = '0.1.0'.freeze
 end
