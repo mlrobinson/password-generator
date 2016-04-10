@@ -11,23 +11,26 @@ option_parser = OptionParser.new do |opts|
   executable_name = File.basename($PROGRAM_NAME)
   opts.banner = "Usage: #{executable_name} [options] length"
 
-  options[:file] = ''
-  opts.on('-f', '--file', 'Character set file') do |_file|
-    options[:file] = true
+  options[:file] = '.passgen'
+  opts.on('-f', '--file', 'Character set file') do |file|
+    options[:file] = file
   end
 end
 
+set = nil
 # Read config file in home dir
-set = [
-  'abcdefghijklmnopqrstuvwxyz',
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-  '0123456789',
-  '!"#$%&\'()*+,-./:;<=>?@[]^_`{}~|'
-]
+if File.exist?(File.join(ENV['HOME'], '/.passgen'))
+  config = File.open(File.join(ENV['HOME'], '/.passgen'))
+  set = []
+  config.each { |line| set << line.chomp }
+end
 
-# Read config in local dir
-
-# Read config from command line
+# Read config from command line, defaults to './.passgen'
+if File.exist?(File.expand_path(options[:file]))
+  config = File.open(File.expand_path(options[:file]))
+  set = []
+  config.each { |line| set << line.chomp }
+end
 
 begin
   option_parser.parse!
@@ -43,7 +46,7 @@ if ARGV.empty?
   puts 'Error: you must specify a password length'
   puts option_parser.help
 else
-  length = ARGV[0].to_i
+  length = ARGV.pop.to_i
   if length > 0
     passwords = PasswordGenerator::PassGen.new(set)
     print passwords.generate(length)
