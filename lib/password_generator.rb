@@ -3,7 +3,8 @@ require 'securerandom'
 
 module PasswordGenerator
   # Password Generator class
-  # This is setup to allow us to specify different password requirements for differnet systems
+  # This is setup to allow us to specify different password requirements
+  # for differnet systems
   class PassGen
     def initialize(sets = nil)
       @sets = sets
@@ -29,20 +30,24 @@ module PasswordGenerator
       raise 'You must enter at least one character set!' if @sets.empty?
     end
 
-    def get_random_char(str)
-      str[SecureRandom.random_number(str.length)]
+    def random_pos(str)
+      SecureRandom.random_number(str.length)
+    end
+
+    def random_char(str)
+      str[random_pos(str)]
     end
 
     def generate(len)
       build_full_set if @full_set.empty?
-      generated = ''
+      gen = ''
       (len - @sets.length).times do
-        generated = generated.insert(SecureRandom.random_number(generated.length), get_random_char(@full_set))
+        gen = gen.insert(random_pos(gen), random_char(@full_set))
       end
       @sets.each do |set|
-        generated = generated.insert(SecureRandom.random_number(generated.length), get_random_char(set))
+        gen = gen.insert(random_pos(gen), random_char(set))
       end
-      generated
+      gen
     end
   end
 end
